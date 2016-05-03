@@ -1,2 +1,8 @@
 # t-rand
-C++ random lib for meta-programming/compile-time random value generate
+compile-time PRNG
+
+# Support Algorithm
+- MT19937
+
+# License
+Apache License Version 2.0

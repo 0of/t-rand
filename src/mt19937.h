@@ -47,5 +47,18 @@ struct Defn_GenState {
   // array
   template<ValueType i> struct At : public std::integral_constant<decltype(For_1::seq[0]), For_1::seq[i] >{};
 
-  // TODO
+  template<ValueType index> using ForSeq_2 = Case<index,
+                                                  CaseClause<ValueType, InRange, At>,
+                                                  CaseClause<ValueType, InRange_2, At_2>,
+                                                  CaseClause<ValueType, Truth, Zero>>;
+
+  // final result
+  template<ValueType value> struct IsLast : public std::integral_constant<bool, value == n - 1>{};
+  
+  template<ValueType i> struct AtLast : public std::integral_constant<decltype(For_2::seq[0]),  XOR<ForSeq_2<m - 1>, Twiddle<ForSeq_2<n - 1>, ForSeq_2<0>> >::value >{};
+
+  template<ValueType index> using ResultState = Case<index,
+                                                     CaseClause<ValueType, InRange, At>,
+                                                     CaseClause<ValueType, InRange_2, At_2>,
+                                                     CaseClause<ValueType, IsLast, AtLast>>;
 };

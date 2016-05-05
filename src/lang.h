@@ -88,3 +88,35 @@ struct XOR {
     static constexpr auto value = Var::value xor Var_::value;
 };
 
+//
+// For ex
+//
+template
+<
+  std::uint32_t index,
+  std::uint32_t end,
+  template<std::uint32_t, std::uint32_t pre> class ExprBody,
+  std::uint32_t prev,
+  std::uint32_t... values
+>
+struct For_Ex {
+  static constexpr auto& seq = For_Ex<index + 1, end, ExprBody, ExprBody<index, prev>::value, prev, values...>::seq;
+};
+
+template
+<
+  std::uint32_t end,
+  template<std::uint32_t, std::uint32_t pre> class ExprBody,
+  std::uint32_t... values
+>
+struct For_Ex<end, end, ExprBody, values...> {
+  static constexpr std::uint32_t seq[] = { values... };
+};
+
+template
+<
+  std::uint32_t end,
+  template<std::uint32_t, std::uint32_t pre> class ExprBody,
+  std::uint32_t... values
+>
+constexpr const std::uint32_t For_Ex<end, end, ExprBody, values...>::seq[];

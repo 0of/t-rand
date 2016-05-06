@@ -120,3 +120,31 @@ template
   std::uint32_t... values
 >
 constexpr const std::uint32_t For_Ex<end, end, ExprBody, values...>::seq[];
+
+//
+// create a raw sequence from Array
+//
+template
+<
+  template<std::uint32_t> class Array, 
+  std::uint32_t len, 
+  std::uint32_t... values
+>
+struct Sequence {
+  static constexpr auto& seq = Sequence<Array, len - 1, values..., Array<len - 1>::Evaluator::value>::seq;
+};
+
+template
+<
+  template<std::uint32_t> class Array, 
+  std::uint32_t... values
+>
+struct Sequence<Array, 0, values...> {
+  static constexpr std::uint32_t seq[] = { values... };
+};
+
+template
+<
+  template<std::uint32_t> class Array, std::uint32_t... values
+>
+constexpr std::uint32_t Sequence<Array, 0, values...>::seq[];

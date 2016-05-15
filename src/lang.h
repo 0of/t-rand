@@ -1,4 +1,12 @@
-o
+/*
+ * t-rand
+ *
+ * Copyright (c) 2016 "0of" Magnus
+ * Licensed under the Apache License, Version 2.0
+ * https://github.com/0of/t-rand/blob/master/LICENSE
+ */
+#ifndef LANG_H
+#define LANG_H
 
 //
 // for generator
@@ -142,3 +150,5 @@ template
   template<std::uint32_t> class Array, std::uint32_t... values
 >
 constexpr std::uint32_t Sequence<Array, 0, values...>::seq[];
+
+#endif // LANG_H

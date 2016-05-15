@@ -5,6 +5,8 @@
  * Licensed under the Apache License, Version 2.0
  * https://github.com/0of/t-rand/blob/master/LICENSE
  */
+#ifndef MT19937_H
+#define MT19937_H
 
 #include <type_traits>
 
@@ -133,3 +135,4 @@ struct MTRandomGenerator<States, 0, p, values...> {
   static constexpr std::uint32_t seq[] = { values... };
 };
 
+#endif // MT19937_H

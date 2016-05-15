@@ -1,10 +1,4 @@
-/*
- * t-rand
- *
- * Copyright (c) 2016 "0of" Magnus
- * Licensed under the Apache License, Version 2.0
- * https://github.com/0of/t-rand/blob/master/LICENSE
- */
+o
 
 //
 // for generator
@@ -19,7 +13,7 @@ template
   std::uint32_t... values
 >
 struct For {
-    static constexpr auto& seq = For<index + 1, end, ExprBody, ExprBody<index>::value, values...>::seq;
+  static constexpr auto& seq = For<index + 1, end, ExprBody, ExprBody<index>::value, values...>::seq;
 };
 
 template
@@ -29,7 +23,7 @@ template
   std::uint32_t... values
 >
 struct For<end, end, ExprBody, values...> {
-    static constexpr std::uint32_t seq[] = { values... };
+  static constexpr std::uint32_t seq[] = { values... };
 };
 
 template<
@@ -53,7 +47,7 @@ template
   typename... Clauses
 >
 struct Case {
-    using Evaluator = std::conditional_t<Clause::template TestExpr<value>::value, typename Clause::template ResultExpr<value>, typename Case<value, Clauses...>::Evaluator>;
+  using Evaluator = std::conditional_t<Clause::template TestExpr<value>::value, typename Clause::template ResultExpr<value>, typename Case<value, Clauses...>::Evaluator>;
 };
 
 template
@@ -62,7 +56,7 @@ template
   typename Clause
 >
 struct Case<value, Clause> {
-    using Evaluator = std::conditional_t<Clause::template TestExpr<value>::value, typename Clause::template ResultExpr<value>, std::integral_constant<std::uint32_t, value>>;
+  using Evaluator = std::conditional_t<Clause::template TestExpr<value>::value, typename Clause::template ResultExpr<value>, std::integral_constant<std::uint32_t, value>>;
 };
 
 template
@@ -72,8 +66,8 @@ template
   template<ValueType> class Result
 >
 struct CaseClause {
-    template<ValueType value> using TestExpr = Test<value>;
-    template<ValueType value> using ResultExpr = Result<value>;
+  template<ValueType value> using TestExpr = Test<value>;
+  template<ValueType value> using ResultExpr = Result<value>;
 };
 
 //
@@ -85,7 +79,7 @@ template
   typename Var_
 >
 struct XOR {
-    static constexpr auto value = Var::value xor Var_::value;
+  static constexpr auto value = Var::value xor Var_::value;
 };
 
 //

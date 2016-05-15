@@ -75,6 +75,8 @@ struct Defn_GenState {
                                                     CaseClause<ValueType, InRange, At>,
                                                     CaseClause<ValueType, InRange_2, At_2>,
                                                     CaseClause<ValueType, IsLast, AtLast>>;
+
+  using States = Sequence<ResultState, n>;
 };
 
 template
@@ -89,8 +91,45 @@ struct Defn_Seed {
   struct ForBody : public std::integral_constant<ValueType, 0xFFFFFFFFUL & (1812433253UL * (prev ^ (prev >> 30)) + index) >{};
   
   using States = For_Ex<1, n, ForBody, seed & 0xFFFFFFFFUL>;
+};
+
+template
+<
+  typename ValueType,
+  std::uint32_t x
+>
+struct Defn_Rand {
+  using Op0 = std::integral_constant<ValueType, x ^ (x >> 11)>;
+  template<typename X> struct Op1 : public std::integral_constant<ValueType, X::value ^ ((X::value << 7) & 0x9D2C5680UL)>{};
+  template<typename X> struct Op2 : public std::integral_constant<ValueType, X::value ^ ((X::value << 15) & 0xEFC60000UL)>{};
+  template<typename X> struct Op3 : public std::integral_constant<ValueType, X::value ^ (X::value >> 18)>{};
+
+  using Result = Op3<Op2<Op1<Op0>>>;
+};
+
+//
+// Generator
+//
+template<typename States, std::size_t count, std::size_t p, std::uint32_t... values>
+struct MTRandomGenerator {
+  static constexpr auto& seq = MTRandomGenerator<States, count - 1, p + 1, values..., Defn_Rand<std::uint32_t, States::seq[p]>::Result::value>::seq;
+};
+
+template<typename States, std::size_t count, std::uint32_t... values>
+struct MTRandomGenerator<States, count, 624, values...> {
+  template<std::uint32_t i> using Type = std::integral_constant<std::uint32_t, States::seq[i]>;
   
-  // states accessor
-  template<ValueType i> using StatesArray = std::integral_constant<std::uint32_t, States::seq[i]>;
+  using NextStates = typename Defn_GenState<std::uint32_t,
+                                            624,
+                                            397,
+                                            Type>::States;
+  
+  // reset states
+  static constexpr auto& seq = MTRandomGenerator<NextStates, count, 0, values...>::seq;
+};
+
+template<typename States, std::size_t p, std::uint32_t... values>
+struct MTRandomGenerator<States, 0, p, values...> {
+  static constexpr std::uint32_t seq[] = { values... };
 };
 

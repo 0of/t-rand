@@ -22,11 +22,16 @@ struct CompilerTime {
 #define RAND_SEED GetHash<CompilerTime, CompilerTime::GetLengthOf(CompilerTime::value), 0, 0>::value;
 #endif // RAND_SEED
 
-using MersenneTwisterEngine = Sequence<Defn_GenState<std::uint32_t, 624, 397,  Defn_Seed<std::uint32_t, 624, 397, RAND_SEED>::StatesArray>::ResultState, 624>;
+class MersenneTwisterEngine{};
 
 // random generator
 template<typename Engine, std::size_t count>
 struct RandomGenerator;
+
+template<std::size_t count>
+struct RandomGenerator<MersenneTwisterEngine, count> {
+  static constexpr auto& seq = MTRandomGenerator<Defn_Seed<std::uint32_t, 624, 397, RAND_SEED>::States, count, 624>::seq;
+};
 
 #endif // TRAND_H
 

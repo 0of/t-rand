@@ -1,4 +1,15 @@
-o
+/*
+ * t-rand
+ *
+ * Copyright (c) 2016 "0of" Magnus
+ * Licensed under the Apache License, Version 2.0
+ * https://github.com/0of/t-rand/blob/master/LICENSE
+ */
+#ifndef LANG_H
+#define LANG_H
+
+#include <cstdint>
+#include <type_traits>
 
 //
 // for generator
@@ -13,7 +24,7 @@ template
   std::uint32_t... values
 >
 struct For {
-  static constexpr auto& seq = For<index + 1, end, ExprBody, ExprBody<index>::value, values...>::seq;
+  static constexpr auto& seq = For<index + 1, end, ExprBody, values..., ExprBody<index>::value>::seq;
 };
 
 template
@@ -47,7 +58,7 @@ template
   typename... Clauses
 >
 struct Case {
-  using Evaluator = std::conditional_t<Clause::template TestExpr<value>::value, typename Clause::template ResultExpr<value>, typename Case<value, Clauses...>::Evaluator>;
+    using Evaluator = typename std::conditional<Clause::template TestExpr<value>::value, typename Clause::template ResultExpr<value>, typename Case<value, Clauses...>::Evaluator>::type;
 };
 
 template
@@ -56,7 +67,7 @@ template
   typename Clause
 >
 struct Case<value, Clause> {
-  using Evaluator = std::conditional_t<Clause::template TestExpr<value>::value, typename Clause::template ResultExpr<value>, std::integral_constant<std::uint32_t, value>>;
+    using Evaluator = typename std::conditional<Clause::template TestExpr<value>::value, typename Clause::template ResultExpr<value>, std::integral_constant<std::uint32_t, value>>::type;
 };
 
 template
@@ -142,3 +153,5 @@ template
   template<std::uint32_t> class Array, std::uint32_t... values
 >
 constexpr std::uint32_t Sequence<Array, 0, values...>::seq[];
+
+#endif // LANG_H

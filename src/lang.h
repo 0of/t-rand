@@ -21,7 +21,7 @@ template
   std::uint32_t... values
 >
 struct For {
-  static constexpr auto& seq = For<index + 1, end, ExprBody, ExprBody<index>::value, values...>::seq;
+  static constexpr auto& seq = For<index + 1, end, ExprBody, values..., ExprBody<index>::value>::seq;
 };
 
 template

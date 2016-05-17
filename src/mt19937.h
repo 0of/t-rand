@@ -135,4 +135,7 @@ struct MTRandomGenerator<States, 0, p, values...> {
   static constexpr std::uint32_t seq[] = { values... };
 };
 
+template<typename States, std::size_t p, std::uint32_t... values>
+constexpr std::uint32_t MTRandomGenerator<States, 0, p, values...>::seq[];
+
 #endif // MT19937_H

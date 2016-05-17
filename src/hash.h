@@ -8,6 +8,8 @@
 #ifndef HASH_H
 #define HASH_H
 
+#include <cstddef>
+
 // get hash code at compile-time
 template<typename String, std::size_t len, std::size_t i, std::size_t hash>
 struct GetHash {

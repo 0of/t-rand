@@ -9,6 +9,7 @@
 #include "rand.h"
 
 namespace MT_Impl {
+  static const int n = 624, m = 397;
   static unsigned long state[n] = {0x0UL};
   static int p = 0;
 
@@ -71,6 +72,29 @@ using DefaultContainer = LTest::SequentialTestRunnableContainer;
     \
     return 0; \
   }
+
+template<typename Spec>
+class SpecInitializer {
+private:
+    std::add_lvalue_reference_t<Spec> _spec;
+    
+public:
+    explicit SpecInitializer(std::add_lvalue_reference_t<Spec> spec)
+    : _spec{ spec }
+    {}
+    
+public:
+    template<typename Functor>
+    void appendCases(Functor&& fn) {
+        fn(_spec);
+    }
+    
+    template<typename Any, typename... Rest>
+    void appendCases(Any&& any, Rest&&... rest) {
+        appendCases(std::forward<Any>(any));
+        appendCases(std::forward<Rest>(rest)...);
+    }
+};
  
 template<typename T>
 void setup(T& spec) {
@@ -82,9 +106,9 @@ void setup(T& spec) {
 
     std::array<std::uint32_t, count> runtimeGenValues;
 
-    seed(RAND_SEED);
+    MT_Impl::seed(5489UL);
     for (auto i = 0; i != count; ++i) {
-      runtimeGenValues[i] = rand();
+      runtimeGenValues[i] = MT_Impl::rand();
     }
 
     auto& values = RandomGenerator<MersenneTwisterEngine, 5>::seq;

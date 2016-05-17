@@ -9,7 +9,8 @@
 #ifndef TRAND_H
 #define TRAND_H
 
-#include "mt19937"
+#include "hash.h"
+#include "mt19937.h"
 
 struct CompilerTime {
   static constexpr const char *value = __TIME__;
@@ -30,7 +31,7 @@ struct RandomGenerator;
 
 template<std::size_t count>
 struct RandomGenerator<MersenneTwisterEngine, count> {
-  static constexpr auto& seq = MTRandomGenerator<Defn_Seed<std::uint32_t, 624, 397, RAND_SEED>::States, count, 624>::seq;
+  static constexpr auto& seq = MTRandomGenerator<Defn_Seed<std::uint32_t, 624, 397, 5489UL>::States, count, 624>::seq;
 };
 
 #endif // TRAND_H

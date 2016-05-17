@@ -8,6 +8,9 @@
 #ifndef LANG_H
 #define LANG_H
 
+#include <cstdint>
+#include <type_traits>
+
 //
 // for generator
 //  [index, end]
@@ -55,7 +58,7 @@ template
   typename... Clauses
 >
 struct Case {
-  using Evaluator = std::conditional_t<Clause::template TestExpr<value>::value, typename Clause::template ResultExpr<value>, typename Case<value, Clauses...>::Evaluator>;
+    using Evaluator = typename std::conditional<Clause::template TestExpr<value>::value, typename Clause::template ResultExpr<value>, typename Case<value, Clauses...>::Evaluator>::type;
 };
 
 template
@@ -64,7 +67,7 @@ template
   typename Clause
 >
 struct Case<value, Clause> {
-  using Evaluator = std::conditional_t<Clause::template TestExpr<value>::value, typename Clause::template ResultExpr<value>, std::integral_constant<std::uint32_t, value>>;
+    using Evaluator = typename std::conditional<Clause::template TestExpr<value>::value, typename Clause::template ResultExpr<value>, std::integral_constant<std::uint32_t, value>>::type;
 };
 
 template

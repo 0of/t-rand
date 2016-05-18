@@ -44,11 +44,11 @@ struct Defn_GenState {
   template<ValueType value> struct InRange : public std::integral_constant<bool, value >= 0 && value < n - m>{}; 
   
   // array
-    template<ValueType i> struct At : public std::integral_constant<std::uint32_t, For_1::seq[i] >{};
-    
-    template<ValueType index> using ForSeq_1 = Case<index,
-                CaseClause<ValueType, InRange, At>,
-                CaseClause<ValueType, Truth, InitState>>;
+  template<ValueType i> struct At : public std::integral_constant<std::uint32_t, For_1::seq[i] >{};
+  
+  template<ValueType index> using ForSeq_1 = Case<index,
+              CaseClause<ValueType, InRange, At>,
+              CaseClause<ValueType, Truth, InitState>>;
     
   // for (int i = n - m; i < (n - 1); ++i)
   //   state[i] = state[i + m - n] ^ twiddle(state[i], state[i + 1]);

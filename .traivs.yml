@@ -1,0 +1,38 @@
+language: cpp
+
+os:
+  - linux
+  - osx
+
+compiler:
+  - clang
+  - gcc
+
+addons:
+ apt:
+   sources:
+     - llvm-toolchain-precise-3.8
+     - ubuntu-toolchain-r-test
+   packages:
+     - g++-5
+     - clang-3.8
+     - cmake
+
+before_install:
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install --with-clang llvm38; fi
+  # pwd ~> HOME/test
+  - cd ./test
+
+install:
+  - if [[ "$CXX" == "g++" && "$TRAVIS_OS_NAME" != "osx" ]]; then export CXX="g++-5" CC="gcc-5"; fi
+  - if [[ "$CXX" == "clang++" ]]; then export CXX="clang++-3.8" CC="clang-3.8"; fi
+  - if [[ "$CXX" == "g++" && "$TRAVIS_OS_NAME" == "osx" ]]; then export CXX="clang++-3.8" CC="clang-3.8"; fi
+  - $CXX --version
+  - cmake .
+  - sudo make all
+
+script:
+  - make run_test
+
+

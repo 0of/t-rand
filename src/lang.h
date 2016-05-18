@@ -105,26 +105,28 @@ template
   std::uint32_t... values
 >
 struct For_Ex {
-  static constexpr auto& seq = For_Ex<index + 1, end, ExprBody, ExprBody<index, prev>::value, prev, values...>::seq;
+  static constexpr auto& seq = For_Ex<index + 1, end, ExprBody, ExprBody<index, prev>::value, values..., prev>::seq;
 };
 
 template
 <
   std::uint32_t end,
   template<std::uint32_t, std::uint32_t pre> class ExprBody,
+  std::uint32_t last,
   std::uint32_t... values
 >
-struct For_Ex<end, end, ExprBody, values...> {
-  static constexpr std::uint32_t seq[] = { values... };
+struct For_Ex<end, end, ExprBody, last, values...> {
+  static constexpr std::uint32_t seq[] = { values..., last };
 };
 
 template
 <
   std::uint32_t end,
   template<std::uint32_t, std::uint32_t pre> class ExprBody,
+  std::uint32_t last,
   std::uint32_t... values
 >
-constexpr const std::uint32_t For_Ex<end, end, ExprBody, values...>::seq[];
+constexpr const std::uint32_t For_Ex<end, end, ExprBody, last, values...>::seq[];
 
 //
 // create a raw sequence from Array
@@ -136,7 +138,8 @@ template
   std::uint32_t... values
 >
 struct Sequence {
-  static constexpr auto& seq = Sequence<Array, len - 1, values..., Array<len - 1>::Evaluator::value>::seq;
+  // reverse order
+  static constexpr auto& seq = Sequence<Array, len - 1, Array<len - 1>::Evaluator::value, values...>::seq;
 };
 
 template

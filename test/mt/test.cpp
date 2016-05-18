@@ -95,7 +95,7 @@ public:
         appendCases(std::forward<Rest>(rest)...);
     }
 };
- 
+
 template<typename T>
 void setup(T& spec) {
 
@@ -112,7 +112,7 @@ void setup(T& spec) {
     }
 
     auto& values = RandomGenerator<MersenneTwisterEngine, 5>::seq;
-    
+      
     if (!std::equal(runtimeGenValues.begin(), runtimeGenValues.end(), std::begin(values)))
       throw 0;
   });

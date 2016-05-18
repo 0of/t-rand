@@ -138,7 +138,8 @@ template
   std::uint32_t... values
 >
 struct Sequence {
-  static constexpr auto& seq = Sequence<Array, len - 1, values..., Array<len - 1>::Evaluator::value>::seq;
+  // reverse order
+  static constexpr auto& seq = Sequence<Array, len - 1, Array<len - 1>::Evaluator::value, values...>::seq;
 };
 
 template

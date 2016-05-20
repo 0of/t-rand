@@ -8,19 +8,17 @@
 #ifndef HASH_H
 #define HASH_H
 
-#include <cstddef>
+#include <cstdint>
 
 // get hash code at compile-time
-template<typename String, std::size_t len, std::size_t i, std::size_t hash>
+template<typename String, std::uint32_t len, std::uint32_t i, std::uint32_t hash>
 struct GetHash {
-  static constexpr std::size_t value = GetHash<String, len, i + 1, ((31 *  hash) + String::value[i])>::value;
+  static constexpr std::uint32_t value = GetHash<String, len, i + 1, ((31 *  hash) + String::value[i])>::value;
 };
 
-template<typename String, std::size_t len, std::size_t hash>
+template<typename String, std::uint32_t len, std::uint32_t hash>
 struct GetHash<String, len, len, hash> {
-  static constexpr std::size_t value = hash;
+  static constexpr std::uint32_t value = hash;
 };
 
 #endif // HASH_H
-
-

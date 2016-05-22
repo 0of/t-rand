@@ -24,7 +24,7 @@ include_directories("${CMAKE_CURRENT_SOURCE_DIR}/")
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
 ## widen template depth threshold
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -ftemplate-depth=800")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -ftemplate-depth=1400")
 set(EXECUTABLE_OUTPUT_PATH "${CMAKE_CURRENT_SOURCE_DIR}/bin")
 
 if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")

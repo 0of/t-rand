@@ -14,7 +14,7 @@
 
 struct CompilerTime {
   static constexpr const char *value = __TIME__;
-  static constexpr const size_t GetLengthOf(const char* str) {
+  static constexpr const std::uint32_t GetLengthOf(const char* str) {
     return (*str == 0) ? 0 : GetLengthOf(str + 1) + 1;
   }
 };
@@ -26,10 +26,10 @@ struct CompilerTime {
 class MersenneTwisterEngine{};
 
 // random generator
-template<typename Engine, std::size_t count>
+template<typename Engine, std::uint32_t count>
 struct RandomGenerator;
 
-template<std::size_t count>
+template<std::uint32_t count>
 struct RandomGenerator<MersenneTwisterEngine, count> {
   static constexpr auto& seq = MTRandomGenerator<Defn_Seed<std::uint32_t, 624, 397, RAND_SEED>::States, count, 624>::seq;
 };

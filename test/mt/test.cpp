@@ -103,10 +103,10 @@ void setup(T& spec) {
   /* ==> */
   .it("should generate same random values", [] {
     constexpr const int count = 5;
-
+      
     std::array<std::uint32_t, count> runtimeGenValues;
 
-    MT_Impl::seed(5489UL);
+    MT_Impl::seed(RAND_SEED);
     for (auto i = 0; i != count; ++i) {
       runtimeGenValues[i] = MT_Impl::rand();
     }
